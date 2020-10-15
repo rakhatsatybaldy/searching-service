@@ -1,8 +1,11 @@
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="kz.bitlab.course.db.Countries" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>Title</title>
     <%@include file="head.jsp"%>
+    <script type="text/javascript" src="js/jquery-3.5.1.min.js"></script>
 </head>
 <body>
 <%@include file="navbar.jsp"%>
@@ -23,6 +26,19 @@
             %>
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 Passwords are not same!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <%
+                }
+            %>
+            <%
+                String cityError = request.getParameter("cityerror");
+                if (cityError!=null){
+            %>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                Choose the existing city!
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -87,11 +103,49 @@
                     <input type="text" name="full_name" class="form-control" value="<%=(fullName!=null?fullName:"")%>" required>
                 </div>
                 <div class="form-group">
+                    <label>
+                        COUNTRY :
+                    </label>
+                    <select class="form-control" id="country_id">
+                        <option value = "0">Select Country</option>
+                        <%
+                            ArrayList<Countries> countries = (ArrayList<Countries>) request.getAttribute("countries");
+                            if (countries!=null){
+                                for (Countries c: countries){
+                        %>
+                            <option value="<%=c.getId()%>"><%=c.getName() + " " + c.getCode()%></option>
+                        <%
+                            }
+                            }
+                        %>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>
+                        CITY :
+                    </label>
+                    <select class="form-control" id="city_id">
+                    </select>
+                </div>
+
+                <div class="form-group">
                     <button class="btn btn-success">CREATE ACCOUNT</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    $(document).ready(function (){
+       $("#country_id").change(function (){
+            cId = $("#country_id").val();
+            $.post("/ajax" , {
+                country_id : cId
+            }, function (data){
+                $("#city_id").html(data);
+            });
+       });
+    });
+</script>
 </body>
 </html>

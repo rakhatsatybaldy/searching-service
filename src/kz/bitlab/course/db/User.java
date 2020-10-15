@@ -6,15 +6,17 @@ public class User {
     private String password;
     private String fullName;
     private String avatar;
+    private Cities city;
 
     public User(){}
 
-    public User(Long id, String email, String password, String fullName, String avatar) {
+    public User(Long id, String email, String password, String fullName, String avatar, Cities city) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.fullName = fullName;
         this.avatar = avatar;
+        this.city = city;
     }
 
     public Long getId() {
@@ -55,5 +57,13 @@ public class User {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public Cities getCity() {
+        return city;
+    }
+
+    public void setCity(Cities city) {
+        this.city = city;
     }
 }
